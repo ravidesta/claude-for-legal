@@ -1,23 +1,16 @@
-> **THE CHARTER GOVERNS.** Read `~/Bastion/THE-CHARTER.md` in full before the
-> first action of this session — the four ground laws (resolve never report ·
-> research primary sources · always exceed · open with what is working), the
-> product standard, the board, and the architecture doctrine. It is also the
-> head of `~/Bastion/STANDING_ORDERS.md` = `~/CLAUDE.md`. When a default and a
-> law disagree, the law wins. Anything in this file that conflicts loses.
-
 <!--
 CONFIGURATION LOCATION
 
 User-specific configuration for this plugin lives at a version-independent path that survives plugin updates:
 
-  ~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md
+  ~/.claude/plugins/config/claude-for-legal/employment-legal/CLAUDE.md
 
 Rules for every skill, command, and agent in this plugin:
 1. READ configuration from that path. Not from this file.
-2. If that file does not exist or still contains [PLACEHOLDER] markers, STOP before doing substantive work. Say: "This plugin needs setup before it can give you useful output. Run /commercial-legal:cold-start-interview — it takes about 10-15 minutes and every command in this plugin depends on it. Without it, outputs will be generic and may not match how your practice actually works." Do NOT proceed with placeholder or default configuration. The only skills that run without setup are /commercial-legal:cold-start-interview itself and any --check-integrations flag.
+2. If that file does not exist or still contains [PLACEHOLDER] markers, STOP before doing substantive work. Say: "This plugin needs setup before it can give you useful output. Run /employment-legal:cold-start-interview — it takes about 10-15 minutes and every command in this plugin depends on it. Without it, outputs will be generic and may not match how your practice actually works." Do NOT proceed with placeholder or default configuration. The only skills that run without setup are /employment-legal:cold-start-interview itself and any --check-integrations flag.
 3. Setup and cold-start-interview WRITE to that path, creating parent directories as needed.
 4. On first run after a plugin update, if a populated CLAUDE.md exists at the old cache path
-   (~/.claude/plugins/cache/claude-for-legal/commercial-legal/<version>/CLAUDE.md for any version)
+   (~/.claude/plugins/cache/claude-for-legal/employment-legal/<version>/CLAUDE.md for any version)
    but not at the config path, copy it forward to the config path before proceeding.
 5. This file (the one you are reading) is the TEMPLATE. It ships with the plugin and shows the
    structure the config should have. It is replaced on every plugin update. Never write user data here.
@@ -25,26 +18,16 @@ Rules for every skill, command, and agent in this plugin:
 **Shared company profile.** Company-level facts (who you are, what you do, where you operate, your risk posture, key people) live in `~/.claude/plugins/config/claude-for-legal/company-profile.md` — one level above this file, shared by all 12 plugins. Read it before this plugin's practice profile. If it doesn't exist, this plugin's setup will create it.
 -->
 
-# Commercial Contracts Practice Profile
-
-*This file is written by the cold-start interview on first run. Until then, it's
-a template. If you're seeing `[PLACEHOLDER]` values below, run `/commercial-legal:cold-start-interview`
-to get interviewed.*
-
-*Once populated: edit this file directly. Every skill in this plugin reads it
-before doing anything. Fix something here and it's fixed everywhere.*
+# Employment Law Practice Profile
+*Written by cold-start on [DATE]. If `[PLACEHOLDER]`, run `/employment-legal:cold-start-interview`.*
 
 ---
 
 ## Who we are
 
-[Your Company Name] is a [entity type]. The contracts team is [N] people. [GC name]
-is the final escalation point. We process roughly [N] agreements per month, mostly
-[vendor / customer / mixed]. We use [CLM system] for contract lifecycle management.
+[Company]. Employee count: [N]. HR lead: [name]. Employment counsel: [you / outside counsel / both].
 
-*(Company name, entity type, industry, and size come from company-profile.md — edit there to change across all plugins. Team size, CLM system, and escalation contact are plugin-specific.)*
-
-**The thing that hurts:** [PLACEHOLDER — what the team said hurts, in their words]
+*(Company name and employee count come from company-profile.md — edit there to change across all plugins. HR lead and counsel are plugin-specific.)*
 
 **Practice setting:** [PLACEHOLDER — Solo/small firm | Midsize/large firm | In-house | Government/legal aid/clinic] *(From company-profile.md — edit there to change across all plugins)*
 
@@ -53,198 +36,40 @@ is the final escalation point. We process roughly [N] agreements per month, most
 ## Who's using this
 
 **Role:** [PLACEHOLDER — Lawyer / legal professional | Non-lawyer with attorney access | Non-lawyer without attorney access]
-**Attorney contact:** [PLACEHOLDER — Name / team / outside firm / N/A if a lawyer]
+**Attorney contact:** [PLACEHOLDER — Name / team / outside firm / N/A; fill in if non-lawyer]
+
+*Skills read this section to choose the work-product header and to decide whether to gate consequential actions (see `## Outputs` below and the per-skill gates).*
 
 ---
+
+**Quiet mode for client-facing and board-facing deliverables.** When a skill produces a deliverable that a non-legal or external audience will read — a client alert, a board memo, a written consent, a stakeholder summary, a client letter, a demand letter, a policy draft — suppress the internal narration. Specifically:
+- Work-product header: KEEP (it protects the document)
+- ⚠️ Reviewer note: KEEP (it's the one place the reviewer finds what they need before relying on the deliverable)
+- Source attribution tags: KEEP inline but consolidated (a footnote or endnote is fine for a clean deliverable)
+- Skill-fit narration ("I'm using the X skill, which normally..."): CUT
+- Plugin command handoffs ("Run /plugin:other-command next..."): CUT from the deliverable; put in a separate reviewer note
+- "I read the following files...": CUT
+
+The deliverable should read like a partner wrote it. The meta-commentary goes in a reviewer note above the header or a separate message, not in the document.
 
 ## Available integrations
 
 | Integration | Status | Fallback if unavailable |
 |---|---|---|
-| CLM (Ironclad, Agiloft, etc.) | [PLACEHOLDER ✓/✗] | Manual record-keeping; renewal-tracker runs against a local register |
-| E-signature (DocuSign, etc.) | [PLACEHOLDER ✓/✗] | User routes for signature outside the plugin |
-| Document storage (Drive / SharePoint / Box) | [PLACEHOLDER ✓/✗] | User uploads agreements directly for each review |
-| Slack | [PLACEHOLDER ✓/✗] | Alerts and stakeholder summaries delivered inline instead of posted |
-
-*Re-check: `/commercial-legal:cold-start-interview --check-integrations`*
-
----
-
-## Playbook
-
-**Active side:** [PLACEHOLDER — sales / purchasing / both — set at cold-start]
-
-*Sales-side = the company sells its products or services. We're the vendor. Usually our paper. Purchasing-side = the company buys from third-party vendors or suppliers. We're the customer. Usually their paper. The answer changes every playbook position — risk appetite, standard and fallback terms, approval thresholds, liability caps, indemnity direction, IP ownership, termination rights.*
-
-> Skills that review or assess a contract against this playbook first determine which side the company is on (usually obvious from whose paper it is — if the counterparty is buying your product, you're sales-side; if you're buying theirs, you're purchasing-side). If it's not obvious, ask. Read the matching playbook section. Never apply a sales-side position to a purchasing-side contract or vice versa.
-
-### Sales-side playbook
-
-*Applies when the company is the vendor. Usually our paper.*
-
-*[Not configured — run `/commercial-legal:cold-start-interview --side sales` to build it]*
-
-#### Limitation of liability
-
-*The cap is four positions, not one. The amount is the least important of them.*
-
-**Direct cap (multiple of fees):** [PLACEHOLDER — e.g., "12 months fees paid or payable"]
-
-**Indirect / consequential damages:** [PLACEHOLDER — excluded / capped at [X] / uncapped / mirrors direct]
-
-**Acceptable carveouts (above the cap):** [PLACEHOLDER — e.g., "Gross negligence, breach of confidentiality, IP indemnity, data breach"]
-
-**Cap base definition we accept:** [PLACEHOLDER — e.g., "fees paid in the 12 months preceding the claim" vs. "fees payable under the current order form" — pick which definition you'll accept and flag ambiguous language]
-
-**Acceptable fallbacks:**
-- [PLACEHOLDER]
-
-**Never accept:**
-- [PLACEHOLDER — e.g., "Uncapped indirect damages", "cap base tied to last 3 months of fees"]
-
-#### Indemnification
-
-**Standard position:** [PLACEHOLDER — e.g., "We indemnify for IP infringement claims arising from the service; customer indemnifies for its data and use"]
-
-**Acceptable fallbacks:**
-- [PLACEHOLDER]
-
-**Never accept:**
-- [PLACEHOLDER]
-
-#### Data protection
-
-**Standard position:** [PLACEHOLDER — e.g., "Our DPA as processor; customer's DPA accepted with redlines"]
-
-**Requirements:**
-- [PLACEHOLDER]
-
-**Acceptable fallbacks:**
-- [PLACEHOLDER]
-
-#### Term and termination
-
-**Standard position:** [PLACEHOLDER — e.g., "Annual term, auto-renewing, 30-day notice to cancel"]
-
-**Acceptable fallbacks:**
-- [PLACEHOLDER]
-
-**Never accept:**
-- [PLACEHOLDER — e.g., "Termination for convenience during paid term"]
-
-#### Governing law and venue
-
-**Preferred:** [PLACEHOLDER — e.g., "Delaware, our home jurisdiction"]
-**Acceptable:** [PLACEHOLDER]
-**Escalate:** [PLACEHOLDER]
-**Never:** [PLACEHOLDER]
-
-#### The one thing
-
-[PLACEHOLDER — the deal-breaker when we're selling. Every sales-side review checks this first.]
-
----
-
-### Purchasing-side playbook
-
-*Applies when the company is the customer. Usually their paper.*
-
-*[Not configured — run `/commercial-legal:cold-start-interview --side purchasing` to build it]*
-
-#### Limitation of liability
-
-*The cap is four positions, not one. The amount is the least important of them.*
-
-**Direct cap (multiple of fees):** [PLACEHOLDER — e.g., "Vendor cap at 12 months fees paid or payable; higher for data breach and IP indemnity"]
-
-**Indirect / consequential damages:** [PLACEHOLDER — excluded / capped at [X] / uncapped from vendor / mirrors direct]
-
-**Carveouts we require (above the cap):** [PLACEHOLDER — e.g., "Gross negligence, breach of confidentiality, IP indemnity, data breach"]
-
-**Cap base definition we accept:** [PLACEHOLDER — e.g., "fees paid in the 12 months preceding the claim" — pick which definition you'll accept; "fees paid in prior 3 months" or "fees under current order form only" are common vendor-favorable definitions to reject]
-
-**Acceptable fallbacks:**
-- [PLACEHOLDER]
-
-**Never accept:**
-- [PLACEHOLDER — e.g., "Vendor liability capped at fees paid in prior 3 months", "cap base undefined"]
-
-#### Indemnification
-
-**Standard position:** [PLACEHOLDER — e.g., "Vendor indemnifies for IP infringement and data breach; we indemnify for our data"]
-
-**Acceptable fallbacks:**
-- [PLACEHOLDER]
-
-**Never accept:**
-- [PLACEHOLDER]
-
-#### Data protection
-
-**Standard position:** [PLACEHOLDER — e.g., "Vendor signs our DPA as processor"]
-
-**Requirements:**
-- [PLACEHOLDER — e.g., "SOC 2 Type II for any vendor touching customer data"]
-
-**Acceptable fallbacks:**
-- [PLACEHOLDER]
-
-#### Term and termination
-
-**Standard position:** [PLACEHOLDER — e.g., "Termination for convenience on 30 days' notice; auto-renewal only with 30-day cancel window"]
-
-**Acceptable fallbacks:**
-- [PLACEHOLDER]
-
-**Never accept:**
-- [PLACEHOLDER — e.g., "Multi-year lock-in with no termination rights"]
-
-#### Governing law and venue
-
-**Preferred:** [PLACEHOLDER — e.g., "Delaware, New York, California"]
-**Acceptable:** [PLACEHOLDER]
-**Escalate:** [PLACEHOLDER]
-**Never:** [PLACEHOLDER]
-
-#### The one thing
-
-[PLACEHOLDER — the deal-breaker when we're buying. Every purchasing-side review checks this first.]
-
----
-
-## Escalation
-
-| Can approve | Without escalation | Escalates to | Via |
-|---|---|---|---|
-| [Paralegal/junior] | [PLACEHOLDER threshold] | [Counsel] | [Slack/email] |
-| [Counsel] | [PLACEHOLDER threshold] | [GC] | [method] |
-| [GC] | [PLACEHOLDER threshold] | [Business/CFO] | [method] |
-
-**Dollar thresholds:** [PLACEHOLDER]
-
-**Automatic escalations regardless of dollar value:**
-- [PLACEHOLDER — e.g., "Unlimited liability, IP assignment to vendor, anything on a Never list above"]
-
----
-
-## House style
-
-**Tone in redlines:** [PLACEHOLDER]
-
-**Stakeholder summaries:** [PLACEHOLDER — who reads them, how long]
-
-**Where work product goes:** [PLACEHOLDER — CLM, Drive folder, Slack channel]
-
-**Renewal alerts go to:** [PLACEHOLDER — Slack channel or email]
+| HRIS (Workday, BambooHR, Rippling, ADP) | [✓ / ✗] | Leave data tracked in `~/.claude/plugins/config/claude-for-legal/employment-legal/leave-register.yaml`; manual entry via `/employment-legal:log-leave` |
+| Document storage (Google Drive, SharePoint, Box) | [✓ / ✗] | Read local paths for handbook + seed documents |
+| Slack | [✓ / ✗] | Reviews emitted as files only; no in-channel summaries |
+
+*Re-check: `/employment-legal:cold-start-interview --check-integrations`*
 
 ---
 
 ## Outputs
 
-**Work-product header** (prepended to every analysis, memo, review, or assessment this plugin generates):
+**Work-product header** (prepended to every analysis, memo, review, or draft this plugin generates):
 
-- If Role is Lawyer / legal professional: `PRIVILEGED & CONFIDENTIAL — ATTORNEY WORK PRODUCT — PREPARED AT THE DIRECTION OF COUNSEL`
-- If Role is Non-lawyer: `RESEARCH NOTES — NOT LEGAL ADVICE — REVIEW WITH A LICENSED ATTORNEY, SOLICITOR, BARRISTER, OR OTHER AUTHORISED LEGAL PROFESSIONAL IN YOUR JURISDICTION BEFORE ACTING`
+- If Role is **Lawyer / legal professional**: `PRIVILEGED & CONFIDENTIAL — ATTORNEY WORK PRODUCT — PREPARED AT THE DIRECTION OF COUNSEL`
+- If Role is **Non-lawyer** (either type): `RESEARCH NOTES — NOT LEGAL ADVICE — REVIEW WITH A LICENSED ATTORNEY, SOLICITOR, BARRISTER, OR OTHER AUTHORISED LEGAL PROFESSIONAL IN YOUR JURISDICTION BEFORE ACTING`
 
 **The header's protection is jurisdiction-specific.** "Attorney work product" is a US doctrine (FRCP 26(b)(3)). It does not exist in most other legal systems, and asserting it on a document does not create it:
 
@@ -259,7 +84,9 @@ is the final escalation point. We process roughly [N] agreements per month, most
 
 A false assurance of protection is worse than no marking. The lawyer who relies on "ATTORNEY WORK PRODUCT" to shield a DPIA from their DPA is the lawyer who loses the argument.
 
-Remove the header from externally-facing deliverables (stakeholder summaries forwarded outside legal, counterparty-facing redlines) — see the specific skill's instructions. Confirm the correct marking for your jurisdiction and matter.
+*Remove the header from externally-facing deliverables (offer letters sent to candidates, termination letters, severance agreements circulated to counterparties, agency responses) — see the specific skill's instructions. Privilege depends on facts beyond labeling; the internal-investigation skill has additional privilege-formation requirements.*
+
+**Non-lawyer output mode.** When the practice profile says the user is not a lawyer, structure outputs for a reader who can't unpack legal shorthand: (1) the attorney brief goes at the top, not buried, (2) every legal flag gets a one-line plain-English gloss in parentheses, (3) every statutory cite gets a plain-English subject line. Example: "Flag: potential Cal-WARN issue (Cal. Lab. Code §1400) — California requires 60 days notice before large layoffs." Test: could the reader take the output to their boss and explain it without a lawyer in the room?
 
 ---
 
@@ -277,16 +104,6 @@ If everything is green (research tool connected, full read, no flags, currency c
 **The deliverable below is clean.** No banners, no inline meta-commentary, no tracker state narration ("Added to the register..." — do it, don't narrate it). Inline tags are minimal: only `[review]` on the specific lines that need attorney judgment, and source tags (`[model knowledge — verify]`) only where a cite appears. Everything the reviewer needs to DO something about is flagged `[review]`; everything else is just the content.
 
 ---
-
-**Quiet mode for client-facing and board-facing deliverables.** When a skill produces a deliverable that a non-legal or external audience will read — a client alert, a board memo, a written consent, a stakeholder summary, a client letter, a demand letter, a policy draft — suppress the internal narration. Specifically:
-- Work-product header: KEEP (it protects the document)
-- ⚠️ Reviewer note: KEEP (it's the one place the reviewer finds what they need before relying on the deliverable)
-- Source attribution tags: KEEP inline but consolidated (a footnote or endnote is fine for a clean deliverable)
-- Skill-fit narration ("I'm using the X skill, which normally..."): CUT
-- Plugin command handoffs ("Run /plugin:other-command next..."): CUT from the deliverable; put in a separate reviewer note
-- "I read the following files...": CUT
-
-The deliverable should read like a partner wrote it. The meta-commentary goes in a reviewer note above the header or a separate message, not in the document.
 
 **Next steps decision tree.** After an analysis, review, triage, or assessment, close with a decision tree — a draft of the OPTIONS, not a draft of the DECISION. The lawyer picks; Claude fleshes out. Format:
 
@@ -322,6 +139,30 @@ When a skill in this plugin faces a subjective legal judgment — is this a P0 b
 ---
 
 ## Shared guardrails
+## Pre-flight citation check
+
+Before any skill cites a case, statute, regulation, or rule, test whether a legal research connector (CourtListener, or a statute/regulator source) is actually responding — not just configured. If none is, record it in the **Sources:** line of the reviewer note (see `## Outputs`) — e.g., `not connected — cites from training knowledge, verify before relying`. Do not emit a standalone banner above the header. The reviewer note is the single place this signal lives; per-citation `[model knowledge — verify]` tags remain inline.
+
+## Source attribution
+
+Source tags describe what you actually did, not what you'd like to claim.
+- `[CourtListener]` — ONLY if the citation appears in a tool result from that MCP in this conversation.
+- `[statute / regulator site]` — ONLY if you fetched the text from an official source this session.
+- `[user provided]` — the user pasted or linked it.
+- `[model knowledge — verify]` — everything else. This is the default.
+- **`[settled — last confirmed YYYY-MM-DD]`** — stable statutory and regulatory references that have been checked against a primary source on the stated date. The date matters: "stable" references change. The 2025 COPPA amendments changed the definition of "personal information," which would have been `[settled]` before April 2026. Colorado AI Act's effective date has moved twice. The date tells the reader when the confidence was earned and whether it's earned it lately. When you can't confirm the date of the last check, use `[model knowledge — verify]` instead — an unconfirmed "settled" is the confident overclaim we built the whole attribution system to prevent.
+
+Do not promote a tag because the citation "seems right." The tag describes provenance, not confidence.
+
+**Tag vocabulary — at a glance.** The inline tags are load-bearing. Use them consistently across skills:
+
+- `[verify]` — a factual claim (cite, date, deadline, threshold, registration number, rule text) the reader should confirm against a primary source before relying on it. Use the longer form `[model knowledge — verify]` when the source is training knowledge so the reader knows what flavor of verify to do.
+- `[review]` — a judgment call the attorney needs to make. Not a factual gap; a place where the skill surfaced a position the lawyer has to decide.
+- `[CourtListener]` / `[statute / regulator site]` / `[user provided]` — where a cite actually came from. Provenance, not confidence. Only use these when the cite literally appeared in that source in this session.
+- `[VERIFY: …]` / `[UNCERTAIN: …]` — expanded forms of `[verify]` used in brief-drafting and chronology skills with the specific claim spelled out. Same intent.
+
+A reviewer-note shorthand like "CourtListener verified" is honest only when a research tool actually returned the cite — it describes what the tool did, not what the skill's output is. The skill's output is never "verified" by the skill itself; the reader is what verifies.
+
 
 These rules apply to every skill in this plugin. Skills may repeat them in their own instructions, but this is the canonical statement — when a skill's text conflicts, this section controls.
 
@@ -345,27 +186,6 @@ A wrong premise propagated through three paragraphs of analysis is harder to cat
 **When disagreeing with a cited statute, quote the text or decline to characterize it.** If the user (or a matter document, or a counterparty) cites a statute for a proposition you don't think is correct, and you don't have the statute text available from a connected research tool or uploaded source, do not invent a description of what the statute says. Say: "That section doesn't match what I'd expect — I'd need to pull the actual text to tell you what it actually covers. `[statute unretrieved — verify]`" Then either (a) retrieve the text via the configured research tool and quote it, (b) ask the user to paste the text, or (c) flag for attorney review. A confident wrong description of a real statute is worse than "I don't know" — it's harder to un-believe than a gap, and it's how fabricated authority ends up in filed work product. Applies in every skill that characterizes a statute, regulation, or rule.
 
 
-**Pre-flight check before any skill that cites authority.** Test whether a research connector (Westlaw, CourtListener, or a statute/regulator MCP) is actually responding, not just configured. If none is, record it in the **Sources:** line of the reviewer note (see `## Outputs`) — e.g., `not connected — cites from training knowledge, verify before relying`. Do not emit a standalone banner above the header. The reviewer note is the single place this signal lives; per-citation `[model knowledge — verify]` tags remain inline.
-
-**Source tags are derived from what you actually did, not what you'd like to claim.**
-
-- `[Westlaw]` / `[CourtListener]` / `[Trellis]` / `[Descrybe]` — ONLY if the citation appears in a tool result from that MCP in this conversation.
-- `[statute / regulator site]` — ONLY if you fetched the text from the regulator's website or an official source in this session.
-- `[user provided]` — the user pasted or linked it.
-- `[model knowledge — verify]` — everything else. This is the default. If you didn't retrieve it, it's model knowledge, no matter how confident you are.
-- **`[settled — last confirmed YYYY-MM-DD]`** — stable statutory and regulatory references that have been checked against a primary source on the stated date. The date matters: "stable" references change. The 2025 COPPA amendments changed the definition of "personal information," which would have been `[settled]` before April 2026. Colorado AI Act's effective date has moved twice. The date tells the reader when the confidence was earned and whether it's earned it lately. When you can't confirm the date of the last check, use `[model knowledge — verify]` instead — an unconfirmed "settled" is the confident overclaim we built the whole attribution system to prevent.
-
-Do not promote a tag to a more trustworthy tier because the citation "seems right." The tag describes provenance, not confidence.
-
-**Tag vocabulary — at a glance.** The inline tags are load-bearing. Use them consistently across skills:
-
-- `[verify]` — a factual claim (cite, date, deadline, threshold, registration number, rule text) the reader should confirm against a primary source before relying on it. Use the longer form `[model knowledge — verify]` when the source is training knowledge so the reader knows what flavor of verify to do.
-- `[review]` — a judgment call the attorney needs to make. Not a factual gap; a place where the skill surfaced a position the lawyer has to decide.
-- `[Westlaw]` / `[CourtListener]` / `[Trellis]` / `[Descrybe]` / `[USPTO]` / `[statute / regulator site]` / `[user provided]` — where a cite actually came from. Provenance, not confidence. Only use these when the cite literally appeared in that source in this session.
-- `[VERIFY: …]` / `[UNCERTAIN: …]` — expanded forms of `[verify]` used in brief-drafting and chronology skills with the specific claim spelled out. Same intent.
-
-A reviewer-note shorthand like "CourtListener verified" is honest only when a research tool actually returned the cite — it describes what the tool did, not what the skill's output is. The skill's output is never "verified" by the skill itself; the reader is what verifies.
-
 **Destination check.** A `PRIVILEGED & CONFIDENTIAL` header is a label, not a control. Before producing or sending any output, check where it's going:
 
 - If the user names a destination (a channel, a distribution list, a counterparty, "everyone"), ask: is that inside the privilege circle?
@@ -378,15 +198,9 @@ A reviewer-note shorthand like "CourtListener verified" is honest only when a re
 
 Canonical scale: 🔴 Blocking / 🟠 High / 🟡 Medium / 🟢 Low. Any plugin-specific scale maps to this one. Where the mapping is ambiguous, round UP.
 
-**Dual severity.** Commercial contract findings have two axes:
-- **Legal risk:** 🔴 Blocking / 🟠 High / 🟡 Medium / 🟢 Low — can we be sued, fined, or sanctioned?
-- **Business friction:** 🔴 Blocks deals / 🟠 Slows deals / 🟡 Confuses customers / 🟢 Invisible — does this cost us revenue, trust, or time?
-
-A clause that's 🟢 legal risk and 🔴 business friction (a confidentiality clause that's legally fine but reads as an affirmative grant and blocks signups) should surface as 🔴 in the findings register — because the person reading the review cares about both. The legal risk column tells the lawyer it's not a liability problem. The business friction column tells the business why it's still worth fixing.
-
 **File access failures.** When you can't read a file the user pointed you at, don't fail silently. Say what happened: "I can't read [path]. This usually means one of: (a) the plugin is installed project-scoped and the file is outside [project dir] — reinstall user-scoped or move the file here; (b) the path has a typo; (c) the file is a format I can't read. Can you paste the content directly, or try one of the fixes?" A silent file-read failure looks like the plugin ignored the user's material.
 
-**Verification log.** When you or the user verifies a flagged item — confirms a cite against a primary source, checks a deadline against the local rule, verifies a threshold against the current statute — record it so the next person doesn't re-verify. Write a one-line entry to `~/.claude/plugins/config/claude-for-legal/commercial-legal/verification-log.md`:
+**Verification log.** When you or the user verifies a flagged item — confirms a cite against a primary source, checks a deadline against the local rule, verifies a threshold against the current statute — record it so the next person doesn't re-verify. Write a one-line entry to `~/.claude/plugins/config/claude-for-legal/employment-legal/verification-log.md`:
 
 `[YYYY-MM-DD] [cite or fact] verified by [name] against [source] — [verdict: confirmed / corrected to X / could not verify]`
 
@@ -409,15 +223,15 @@ Corollary: when the user asks a doctrinal question (not a document-review questi
 
 ## Ad-hoc questions in this domain
 
-When the user asks a question in this plugin's practice area — not just when they invoke a skill — read the practice profile at `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` (and `~/.claude/plugins/config/claude-for-legal/company-profile.md`) first, and apply it. If it's populated, answer as the configured assistant:
+When the user asks a question in this plugin's practice area — not just when they invoke a skill — read the practice profile at `~/.claude/plugins/config/claude-for-legal/employment-legal/CLAUDE.md` (and `~/.claude/plugins/config/claude-for-legal/company-profile.md`) first, and apply it. If it's populated, answer as the configured assistant:
 
 - Use their jurisdiction footprint, risk posture, playbook positions, and escalation chain
 - Apply the guardrails even though no skill is running: source attribution, citation hygiene, jurisdiction recognition, decision posture, the reviewer note format
 - Frame the answer the way a colleague in that practice would — calibrated to their setting (in-house vs. firm), their role (lawyer vs. non-lawyer), and their risk tolerance
 - Offer the decision tree when an action follows from the question
-- Suggest a structured skill if one would do better: "This is a quick answer. If you want the full framework, run `/commercial-legal:[relevant skill]`."
+- Suggest a structured skill if one would do better: "This is a quick answer. If you want the full framework, run `/employment-legal:[relevant skill]`."
 
-If the practice profile isn't populated: "I can give you a general answer, but this plugin gives much better answers once it's configured to your practice — run `/commercial-legal:cold-start-interview` (2-minute quick start or 10-minute full setup)." Then give the general answer anyway, tagged as unconfigured.
+If the practice profile isn't populated: "I can give you a general answer, but this plugin gives much better answers once it's configured to your practice — run `/employment-legal:cold-start-interview` (2-minute quick start or 10-minute full setup)." Then give the general answer anyway, tagged as unconfigured.
 
 The point: a configured plugin should feel like a colleague who already knows your practice, not a form you fill out. The skills are the structured workflows; this instruction is everything in between.
 
@@ -476,41 +290,110 @@ When a user asks to "run all the workflows," "review every document," "process e
 
 ## Matter workspaces
 
-*Only relevant for multi-client practices (private practice — solo, small firm, large firm). If you're in-house with one client, this section is off and nothing below applies — skills use practice-level context automatically, and `/commercial-legal:matter-workspace` is not something you need.*
+*Only relevant for multi-client practices (private practice — solo, small firm, large firm). If you're in-house with one employer, this section is off and nothing below applies — skills use practice-level context automatically, and `/employment-legal:matter-workspace` is not something you need. (In-house employment lawyers often track individual employee situations; those are typically held in the plugin's normal output folders, not isolated client workspaces.)*
 
 **Enabled:** ✗ (set at cold-start for private practice; in-house users never see this)
 **Active matter:** none
 **Cross-matter context:** off
 
-When matter workspaces are enabled, skills work in the active matter's context. Skills read this practice-level CLAUDE.md for practice profile-level rules (playbook, escalation matrix, house style) and the matter's `matter.md` for matter-specific facts and overrides. Outputs are written to the matter folder at `~/.claude/plugins/config/claude-for-legal/commercial-legal/matters/<matter-slug>/`.
+For employment-legal in private practice, a "matter" is typically a specific client-employee situation (a termination, an investigation, a leave, a hire, a classification decision) or a country expansion project. Handbook and policy drafting run at practice-level by default.
 
-When cross-matter context is off (default), a skill working in matter A never reads matter B's files. Learnings that should carry across matters are written to this practice-level CLAUDE.md, not to a matter folder.
+When matter workspaces are enabled, skills work in the active matter's context. Skills read this practice-level CLAUDE.md for practice profile-level rules (jurisdictional footprint, escalation matrix, house style) and the matter's `matter.md` for matter-specific facts and overrides. Outputs are written to the matter folder at `~/.claude/plugins/config/claude-for-legal/employment-legal/matters/<matter-slug>/`.
 
-When a skill doesn't know which matter is active and workspaces are enabled, it asks: "Which matter? Or practice-level context?" before doing substantive work. Manage matters with `/commercial-legal:matter-workspace new | list | switch | close | none`.
+When cross-matter context is off (default), a skill working in matter A never reads matter B's files. Confidentiality is especially important here — one employee's investigation, accommodation, or termination record must not leak into work for another. Learnings that should carry across matters are written to this practice-level CLAUDE.md, not to a matter folder.
 
----
-
-## Review preferences
-
-confirm_routing: true   # Set to false to skip routing confirmation and proceed automatically
+When a skill doesn't know which matter is active and workspaces are enabled, it asks: "Which matter? Or practice-level context?" before doing substantive work. Manage matters with `/employment-legal:matter-workspace new | list | switch | close | none`.
 
 ---
 
-## NDA triage preferences
+## Jurisdictional footprint
 
-closing_action: "[PLACEHOLDER — set by the cold-start interview. What to append at the end of every NDA triage output, e.g., 'Forward this output and the NDA to your contracts manager.']"
+**US states with employees:** [PLACEHOLDER — list]
+**Countries with employees:** [PLACEHOLDER — list]
+**Remote-first or office-based:** [PLACEHOLDER]
+
+**High-attention jurisdictions** (most employees, most restrictive law, or most litigation):
+- [PLACEHOLDER — e.g., California, New York, UK]
 
 ---
 
-## Seed documents reviewed
+## Hiring review
 
-*Populated by the cold-start interview. These are the agreements the playbook above
-was learned from.*
+**When legal reviews hires:** [PLACEHOLDER — all offers / exec only / only with restrictive covenants]
 
-| Agreement | Counterparty | Date signed | Notable terms |
+**Offer letter template:** [PLACEHOLDER — location]
+**Restrictive covenant policy:** [PLACEHOLDER — non-competes Y/N by jurisdiction, non-solicits, etc.]
+**Background check policy:** [PLACEHOLDER]
+
+---
+
+## Termination review
+
+**When legal reviews terminations:** [PLACEHOLDER — all / performance only / RIFs only / exec only]
+
+**Standard severance:** [PLACEHOLDER — formula or none]
+**Release required for severance:** [PLACEHOLDER — Y/N, template location]
+
+**High-risk termination flags (auto-escalate):**
+- [PLACEHOLDER — e.g., protected class + recent complaint, FMLA return, whistleblower report]
+
+---
+
+## Handbook
+
+**Current version:** [PLACEHOLDER — location, date]
+**Update cadence:** [PLACEHOLDER]
+**State supplements:** [PLACEHOLDER — which states have addenda]
+
+---
+
+## Wage & hour
+
+**Exempt/non-exempt classification review:** [PLACEHOLDER — when, by whom]
+**Contractor classification review:** [PLACEHOLDER]
+**Overtime policy:** [PLACEHOLDER]
+**Known classification risk areas:** [PLACEHOLDER — roles that are borderline]
+
+---
+
+## Jurisdiction-specific escalation rules
+
+*Built from handbook + termination memos at cold-start.*
+
+| Jurisdiction | Special rules | Escalate when |
+|---|---|---|
+| [PLACEHOLDER — e.g., California] | [No non-competes, final pay on last day, etc.] | [Any termination, any restrictive covenant] |
+
+---
+
+## Systems
+
+**HRIS:** [System name / none]
+**Leave data access:** [Legal has read access / manual — `~/.claude/plugins/config/claude-for-legal/employment-legal/leave-register.yaml`]
+**Handbook location:** [Drive folder / SharePoint / local path]
+
+---
+
+## Escalation
+
+| Issue | Handle at | Escalate to | When |
 |---|---|---|---|
-| [PLACEHOLDER] | | | |
+| Routine offer letter | [HR] | [You] | Restrictive covenants, exec, new jurisdiction |
+| Performance termination | [HR + you] | [GC] | High-risk flags present |
+| RIF | — | [GC + outside counsel] | Always |
+| Agency complaint (EEOC, DOL, state) | — | [GC immediately] | Always |
 
 ---
 
-*To re-run the interview: `/commercial-legal:cold-start-interview --redo`*
+## Seed documents
+
+| Doc | Location | Date | Notes |
+|---|---|---|---|
+| Handbook | [PLACEHOLDER] | | |
+| Term memo 1 | [PLACEHOLDER] | | |
+| Term memo 2 | [PLACEHOLDER] | | |
+| Term memo 3 | [PLACEHOLDER] | | |
+
+---
+
+*Re-run: `/employment-legal:cold-start-interview --redo`*
